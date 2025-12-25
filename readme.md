@@ -1,10 +1,10 @@
 # Enterprise Inventory & Pallet Card Manager
 
-A robust desktop application designed for efficient inventory management, data manipulation, and physical label generation. This project demonstrates a custom-built graphical user interface (GUI) engine designed to replicate the Windows XP aesthetic while providing modern functionality through a modular Model-View-Controller (MVC) architecture.
+A robust desktop application designed for efficient inventory management, data manipulation, and physical label generation. This project demonstrates a custom-built GUI engine designed to replicate the Windows XP aesthetic while providing modern functionality through a modular Model-View-Controller (MVC) architecture.
 
 ## Project Overview
 
-This application serves as a centralized tool for warehouse or inventory environments. It allows users to manage multiple sheets of inventory data, import external datasets via Excel, track modification history, and interface directly with Windows print spoolers for precise label generation.
+This application serves as a centralized tool for warehouse or inventory environments. It allows users to manage multiple sheets of inventory data, import external datasets via Excel (currently designed for 1 unique format), track modification history, and interface directly with Windows print spoolers for precise label generation.
 
 The software was originally developed as a monolithic script and has been extensively refactored into a scalable, object-oriented codebase to ensure maintainability and extensibility.
 
@@ -43,7 +43,6 @@ Located in the `Util/` directory. This layer acts as the Controller.
 
 ## Project Structure
 
-```text
 Root/
 │
 ├── main.py                   # Application Entry Point & Integrity Check
@@ -63,7 +62,6 @@ Root/
 │
 ├── Excel_Manager/            # Data Import Subsystem
 └── Print_Manager/            # Win32 Printing Subsystem
-```
 
 ## Installation and Usage
 
@@ -94,3 +92,4 @@ python main.py
 **This software is proprietary. Usage is granted via the End User License Agreement (EULA) presented upon the first launch of the application. The software verifies a locally generated license key for integrity on startup.**
 
 **Copyright (c) 2025 Lukas Geciauskas. All Rights Reserved.**
+
