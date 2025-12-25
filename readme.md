@@ -64,12 +64,5 @@ python main.py
 
 
 
-## License and Copyright
-
-**This software is proprietary. Usage is granted via the End User License Agreement (EULA) presented upon the first launch of the application. The software verifies a locally generated license key for integrity on startup.**
-
-**Copyright (c) 2025 Lukas Geciauskas. All Rights Reserved.**
-
-
 
 
