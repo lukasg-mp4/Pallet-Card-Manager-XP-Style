@@ -41,27 +41,6 @@ Located in the `Util/` directory. This layer acts as the Controller.
 * **Excel_Manager:** Handles file I/O and data parsing using Pandas.
 * **Print_Manager:** Interfaces with the Windows Spooler API to handle print jobs and GDI drawing contexts.
 
-## Project Structure
-
-Root/
-│
-├── main.py                   # Application Entry Point & Integrity Check
-├── UI/                       # Presentation Layer
-│   ├── Main_Layout/          # Layout Orchestration
-│   ├── Sheet_Editor/         # Custom Grid Rendering Engine
-│   ├── XP_Styling/           # Custom Window Decorations & Dialogs
-│   ├── Tabs/                 # Custom Tab Logic
-│   └── Menus/                # Top Menu Bar Implementation
-│
-├── Util/                     # Application Logic
-│   └── UI_Functionality/
-│       ├── History/          # Session Logging & Persistence
-│       ├── Hotkeys/          # Keyboard Shortcut Management
-│       ├── Navigation/       # Focus & Scroll Logic
-│       └── Sheets/           # Row/Column Data Operations
-│
-├── Excel_Manager/            # Data Import Subsystem
-└── Print_Manager/            # Win32 Printing Subsystem
 
 ## Installation and Usage
 
@@ -92,4 +71,5 @@ python main.py
 **This software is proprietary. Usage is granted via the End User License Agreement (EULA) presented upon the first launch of the application. The software verifies a locally generated license key for integrity on startup.**
 
 **Copyright (c) 2025 Lukas Geciauskas. All Rights Reserved.**
+
 
