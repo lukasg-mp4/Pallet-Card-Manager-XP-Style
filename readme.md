@@ -1,43 +1,43 @@
 # Enterprise Inventory & Pallet Card Manager
 
-A robust desktop application designed for efficient inventory management, data manipulation, and physical label generation. This project demonstrates a custom-built GUI engine designed to replicate the Windows XP aesthetic while providing modern functionality through a modular Model-View-Controller (MVC) architecture.
+A desktop application designed for efficient inventory management, data manipulation, and physical label generation. This project is a custom-built GUI engine designed to replicate the Windows XP aesthetic while providing modern functionality through a modular Model-View-Controller (MVC) architecture.
 
 ## Project Overview
 
-This application serves as a centralized tool for warehouse or inventory environments. It allows users to manage multiple sheets of inventory data, import external datasets via Excel (currently designed for 1 unique format), track modification history, and interface directly with Windows print spoolers for precise label generation.
+This application serves as a tool for warehouse or inventory environments. It allows users to manage multiple sheets of inventory data, import external datasets via Excel (currently designed for 1 unique format), track modification history, and interact directly with Win32 for printing functionality.
 
 ## Key Features
 
-* **Custom UI Engine:** A high-performance, canvas-based rendering engine built on Tkinter. It draws custom grids, headers, and window controls (Title Bars, Resize Handles) to strictly adhere to a specific visual design language (Windows XP) independent of the host OS theme.
+* **Custom UI Engine:** A high-performance, canvas-based rendering engine built on Tkinter. It draws custom grids, headers, and window controls (Title Bars, Resize Handles) to strictly adhere to Windows XP design.
 * **Multi-Sheet Architecture:** Supports dynamic creation, renaming, and deletion of multiple inventory sheets with independent state management.
-* **Excel Integration:** Utilizes Pandas for robust importing of complex Excel datasets, including automatic header detection and data cleaning.
-* **Win32 GDI Printing:** Bypasses standard high-level printing dialogs to use the Windows GDI (Graphics Device Interface) via PyWin32. This ensures pixel-perfect physical alignment for thermal label printers.
+* **Excel Integration:** Utilizes Pandas for importing complex Excel datasets, including automatic header detection and data cleaning.
+* **Win32 GDI Printing:** Bypasses standard high-level printing dialogs to use the Windows GDI (Graphics Device Interface) via PyWin32.
 * **Session History & Persistence:** Implements a custom undo/redo stack and a global history log that persists between sessions via JSON serialization.
-* **Keyboard Navigation:** Full support for keyboard-centric workflows, including navigation, shortcuts, and bulk editing.
+* **Keyboard Navigation:** Full support for keyboard-centric workflows, including navigation and shortcuts.
 
 ## Technical Architecture
 
-The project follows a strict **Model-View-Controller (MVC)** separation of concerns:
+The project follows a **Model-View-Controller (MVC)**:
 
 ### 1. Presentation Layer (UI)
 
 Located in the `UI/` directory. This layer handles all visual elements and user input. It contains no business logic.
 
-* **XP_Styling:** Contains low-level UI definitions, custom title bars, and window management logic using `ctypes` for native Windows behavior (Taskbar grouping, window styles).
+* **XP_Styling:** Contains low-level UI definitions, custom title bars, and window management logic using `ctypes` for native Windows behavior.
 * **Sheet_Editor:** A custom grid widget responsible for rendering thousands of cells efficiently using a canvas coordinate system rather than instantiating thousands of individual widgets.
 
 ### 2. Logic Layer (Util)
 
 Located in the `Util/` directory. This layer acts as the Controller.
 
-* **Hotkeys:** Manages keybinding maps and event propagation.
-* **History:** Manages the session state, snapshot logging, and rollback capabilities.
-* **Navigation:** Handles focus management between the grid editor and the preview pane.
+* **Hotkeys:** Manages keybinding maps and keyboard event handling.
+* **History:** Manages the session state, snapshot logging, and history rollback.
+* **Navigation:** Handles focus management in the grid editor and the preview pane.
 
 ### 3. Data & Hardware Layer (Managers)
 
 * **Excel_Manager:** Handles file I/O and data parsing using Pandas.
-* **Print_Manager:** Interfaces with the Windows Spooler API to handle print jobs and GDI drawing contexts.
+* **Print_Manager:** Interacts with Win32 to handle print jobs and GDI drawing.
 
 
 ## Installation and Usage
@@ -69,6 +69,7 @@ python main.py
 **This software is proprietary. Usage is granted via the End User License Agreement (EULA) presented upon the first launch of the application. The software verifies a locally generated license key for integrity on startup.**
 
 **Copyright (c) 2025 Lukas Geciauskas. All Rights Reserved.**
+
 
 
 
