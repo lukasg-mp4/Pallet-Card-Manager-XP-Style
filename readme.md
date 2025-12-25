@@ -6,8 +6,6 @@ A robust desktop application designed for efficient inventory management, data m
 
 This application serves as a centralized tool for warehouse or inventory environments. It allows users to manage multiple sheets of inventory data, import external datasets via Excel (currently designed for 1 unique format), track modification history, and interface directly with Windows print spoolers for precise label generation.
 
-The software was originally developed as a monolithic script and has been extensively refactored into a scalable, object-oriented codebase to ensure maintainability and extensibility.
-
 ## Key Features
 
 * **Custom UI Engine:** A high-performance, canvas-based rendering engine built on Tkinter. It draws custom grids, headers, and window controls (Title Bars, Resize Handles) to strictly adhere to a specific visual design language (Windows XP) independent of the host OS theme.
@@ -71,5 +69,6 @@ python main.py
 **This software is proprietary. Usage is granted via the End User License Agreement (EULA) presented upon the first launch of the application. The software verifies a locally generated license key for integrity on startup.**
 
 **Copyright (c) 2025 Lukas Geciauskas. All Rights Reserved.**
+
 
 
