@@ -10,6 +10,7 @@ class ExcelLoader:
         )
 
     def load_raw_dataframe(self, file_path):
+
         try:
             return pd.read_excel(file_path, sheet_name="Packing List", header=None)
         except ValueError:

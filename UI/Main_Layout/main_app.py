@@ -29,22 +29,17 @@ class InventoryApp:
         self.root.overrideredirect(True)
         self.root.configure(bg=XP_BORDER_COLOR)
         
-        # --- SAFETY LINES START ---
-        # Initialize these as None so the UI doesn't crash when looking for them
         self.excel_manager = None 
         self.print_manager = None
-        # --- SAFETY LINES END ---
 
         self.data_file = "inventory_data.json"
         self.sheets = {}
-        # ... rest of your code ...
         self.sheet_order = []
         self.active_sheet_name = None
         self.global_history = []
         self.maximized = False
         self.old_geometry = "1100x750+100+100"
 
-        # Hotkeys
         self.hotkey_map = {
             "Rename Sheet": "<Control-r>", "Next Tab": "<Control-Right>",
             "Find": "<Control-f>", "Add Rows": "<Control-n>"
@@ -60,20 +55,20 @@ class InventoryApp:
     def setup_ui(self):
         main_border = tk.Frame(self.root, bg=XP_BORDER_COLOR, bd=3)
         main_border.pack(fill=tk.BOTH, expand=True)
-        self.title_bar = XPTitleBar(main_border, self.root, self, "Multi-Sheet Manager", close_func=self.on_close)
+
+        self.title_bar = XPTitleBar(main_border, 
+                                    self.root, self, 
+                                    "Multi-Sheet Manager", 
+                                    close_func=self.on_close)
         
         self.content = tk.Frame(main_border, bg=XP_BEIGE)
         self.content.pack(fill=tk.BOTH, expand=True)
         
-        # --- NEW: Use the Menu Class ---
         self.top_menu = TopMenuBar(self.content, self)
-        # -------------------------------
 
-        # Body
         body = tk.Frame(self.content, bg=XP_BEIGE, relief="raised", bd=3)
         body.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        # Use TabManager from UI/Tabs/
         self.tabs = TabManager(body, self)
         
         split = tk.Frame(body, bg=XP_BEIGE)
@@ -89,14 +84,18 @@ class InventoryApp:
         
     def switch_to_sheet(self, name):
         if name not in self.sheets: return
+
         self.active_sheet_name = name
+
         for w in self.sheet_holder.winfo_children(): w.pack_forget()
+
         self.sheets[name].pack(fill=tk.BOTH, expand=True)
         self.tabs.render()
         self.trigger_full_refresh()
 
     def add_tab(self, name, data=None):
         if name in self.sheets: return
+
         self.sheets[name] = SheetEditor(self.sheet_holder, self, name, data)
         self.sheet_order.append(name)
         self.switch_to_sheet(name)
@@ -110,6 +109,7 @@ class InventoryApp:
             with open(self.data_file, "r") as f:
                 data = json.load(f)
                 for k, v in data.items(): self.add_tab(k, v)
+
         if not self.sheets: self.add_tab("Default")
 
     def save_data(self):
@@ -138,6 +138,7 @@ class InventoryApp:
     
     def next_tab(self):
         if not self.sheet_order: return
+
         idx = (self.sheet_order.index(self.active_sheet_name) + 1) % len(self.sheet_order)
         self.switch_to_sheet(self.sheet_order[idx])
 
@@ -147,9 +148,11 @@ class InventoryApp:
 
     def toggle_maximize(self):
         self.maximized = not self.maximized
+
         if self.maximized:
             self.old_geometry = self.root.geometry()
             self.root.geometry(f"{self.root.winfo_screenwidth()}x{self.root.winfo_screenheight()}+0+0")
+            
         else:
             self.root.geometry(self.old_geometry)
 

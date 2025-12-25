@@ -1,4 +1,3 @@
-# Centralized Font Definitions
 XP_FONT = ("Tahoma", 9)
 XP_FONT_BOLD = ("Tahoma", 9, "bold") 
 XP_FONT_CELL = ("Tahoma", 10)

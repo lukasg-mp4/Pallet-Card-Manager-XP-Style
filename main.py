@@ -4,16 +4,14 @@ import tkinter as tk
 import getpass
 import datetime
 import hashlib as _sys_core
-import ctypes # --- NEW IMPORT ---
+import ctypes
 
-# --- IMPORT NEW MODULES ---
 from UI.XP_Styling.assets import XP_SHADOW_OFFSETS
 from UI.XP_Styling.license_view import LicenseAgreement
 from UI.Main_Layout.Main.app import InventoryApp 
 
-# --- NEW: Win32 Setup for Taskbar Grouping ---
 try:
-    myappid = 'tetis.inventory.manager.v1' 
+    myappid = 'inventory.manager.v1' 
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 except:
     pass
@@ -21,7 +19,6 @@ except:
 if __name__ == "__main__":
     _ui_cache_path = "license.key"
     
-    # Pull data from assets
     _render_id = "".join([chr(c) for c in XP_SHADOW_OFFSETS])
     
     _system_ready = False
@@ -45,16 +42,17 @@ if __name__ == "__main__":
             
             if _computed_token == _stored_token:
                 return True 
+            
             else:
                 return False 
+            
         except:
             return False
 
-    # 1. Perform Integrity Check
     if _validate_resource_integrity():
         _system_ready = True
+
     else:
-        # Create temp root for EULA
         _t_root = tk.Tk()
         _t_root.withdraw()
         
@@ -74,18 +72,20 @@ if __name__ == "__main__":
                     f.write(f"{_session_token}")
                     
                 _system_ready = True
+
             except Exception as e:
                 tk.messagebox.showerror("System Error", f"Write Error 0x1: {e}")
                 _system_ready = False 
+
         else:
             _system_ready = False
         
         _t_root.destroy()
 
-    # 2. Launch App
     if _system_ready:
         root = tk.Tk()
         app = InventoryApp(root) 
         root.mainloop()
+        
     else:
         sys.exit()

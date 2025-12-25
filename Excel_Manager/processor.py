@@ -3,12 +3,10 @@ import datetime
 
 class DataProcessor:
     def process(self, df):
-        # 1. Find Header
         header_idx, col_map = self._find_headers(df)
         if header_idx == -1:
             raise ValueError("Could not find header row (Customer Code, Qty/Box).")
 
-        # 2. Extract Rows
         return self._extract_rows(df, header_idx, col_map)
 
     def _find_headers(self, df):
@@ -20,16 +18,20 @@ class DataProcessor:
         
         for idx, row in df.iterrows():
             vals = [str(v).strip().lower() for v in row.values]
+
             if any("customer code" in v for v in vals) and any("qty/box" in v for v in vals):
                 col_map = {}
+
                 for c_idx, val in enumerate(row.values):
                     s = str(val).strip()
+
                     if any(t in s for t in targets["Larousse"]): col_map["Larousse"] = c_idx
                     elif any(t in s for t in targets["BBD"]): col_map["BBD"] = c_idx
                     elif any(t in s for t in targets["Qty"]): col_map["Qty"] = c_idx
                 
                 if len(col_map) >= 2:
                     return idx, col_map
+                
         return -1, {}
 
     def _extract_rows(self, df, header_idx, col_map):

@@ -14,6 +14,7 @@ class PrintService:
 
     def start_job(self, sheet_name, items):
         if not items: return
+
         self.queue = items
         self.target_sheet = sheet_name
         self.countdown = 5
@@ -25,6 +26,7 @@ class PrintService:
             self.app.top_menu.update_print_status(f"Starting in {self.countdown}s...", "red", True)
             self.countdown -= 1
             self.timer = self.app.root.after(1000, self.update_countdown)
+
         else:
             self.app.top_menu.update_print_status("Printing...", "blue", True)
             self.cur_doc_idx = 0; self.cur_copy_idx = 0
@@ -32,6 +34,7 @@ class PrintService:
 
     def cancel(self):
         if self.timer: self.app.root.after_cancel(self.timer)
+
         self.queue = []
         self.app.top_menu.update_print_status("Cancelled", "red", False)
         self.app.root.after(3000, lambda: self.app.top_menu.update_print_status("Idle", "black", False))
@@ -50,6 +53,7 @@ class PrintService:
             return
 
         self.cur_copy_idx += 1
+
         if self.cur_copy_idx >= item['copies']:
             done = self.queue.pop(0)
             if self.target_sheet in self.app.sheets:

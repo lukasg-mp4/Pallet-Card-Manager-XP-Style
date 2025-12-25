@@ -17,6 +17,7 @@ class GDIPrinter:
 
             def get_h(text, target):
                 curr = target; limit = int(target * 0.2)
+
                 while abs(curr) > abs(limit):
                     dc = win32ui.CreateDCFromHandle(hDC.GetHandleAttrib())
                     font = win32ui.CreateFont({'name':'Tahoma', 'height':curr, 'weight':700})
@@ -25,6 +26,7 @@ class GDIPrinter:
                     dc.SelectObject(old)
                     if w <= max_w: return curr
                     curr = int(curr * 0.9)
+
                 return curr
 
             def text_out(txt, y_pct, h_target):
@@ -43,4 +45,5 @@ class GDIPrinter:
             
             hDC.EndPage(); hDC.EndDoc(); hDC.DeleteDC()
             return True
+        
         except: return False

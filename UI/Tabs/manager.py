@@ -6,18 +6,17 @@ class TabManager:
     def __init__(self, parent_frame, app_manager):
         self.app = app_manager
         
-        # The container frame for tabs
         self.container = tk.Frame(parent_frame, bg=XP_BEIGE)
         self.container.pack(side=tk.TOP, fill=tk.X, pady=(0, 2))
         
         self.renderer = TabRenderer(self.container)
         
-        # Auto-redraw on window resize
         self.container.bind("<Configure>", lambda e: self.refresh())
 
     def refresh(self):
         """Redraws all tabs based on current app state."""
         self.renderer.clear()
+
         self.renderer.draw_tabs(
             sheet_names=self.app.sheet_order,
             active_name=self.app.active_sheet_name,
@@ -33,12 +32,10 @@ class TabManager:
             target_text = target_widget.cget("text").strip()
             
             if target_text != dragged_name and target_text in self.app.sheet_order:
-                # Swap positions in the data list
                 idx_src = self.app.sheet_order.index(dragged_name)
                 idx_dst = self.app.sheet_order.index(target_text)
                 
                 self.app.sheet_order[idx_src], self.app.sheet_order[idx_dst] = \
                     self.app.sheet_order[idx_dst], self.app.sheet_order[idx_src]
                 
-                # Redraw immediately
                 self.refresh()

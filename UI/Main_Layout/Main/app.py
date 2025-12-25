@@ -103,7 +103,12 @@ class InventoryApp:
     def setup_ui(self):
         border = tk.Frame(self.root, bg=XP_BORDER_COLOR, bd=3)
         border.pack(fill=tk.BOTH, expand=True)
-        self.title_bar = XPTitleBar(border, self.root, self, "Multi-Sheet Manager", close_func=self.on_close)
+        
+        self.title_bar = XPTitleBar(border, 
+                                    self.root, 
+                                    self, 
+                                    "Multi-Sheet Manager", 
+                                    close_func=self.on_close)
         
         self.content = tk.Frame(border, bg=XP_BEIGE)
         self.content.pack(fill=tk.BOTH, expand=True)
@@ -152,9 +157,11 @@ class InventoryApp:
     def call_active_sheet(self, method_name):
         if method_name in ["prompt_add_rows", "prompt_delete_rows", "prompt_clear_sheet"]:
             getattr(self.row_manager, method_name)()
+
         elif method_name == "open_print_manager":
              if self.active_sheet_name:
                  self.sheets[self.active_sheet_name].open_print_manager()
+
         elif self.active_sheet_name:
             if hasattr(self.sheets[self.active_sheet_name], method_name):
                 getattr(self.sheets[self.active_sheet_name], method_name)()
@@ -171,22 +178,20 @@ class InventoryApp:
             cur_r = self.sheets[self.active_sheet_name].cur_row
             self.preview.refresh(rows, cur_r)
 
-    # --- FIX: Restored Logic to prevent 1x1 glitch ---
     def toggle_maximize(self, event=None, use_curtain=True):
         if self.maximized:
-            # RESTORE to old geometry
             target_geo = self.old_geometry
-            # Failsafe: if geometry is missing or garbage (1x1), use default
+
             if not target_geo or target_geo.startswith("1x1+"): 
                 target_geo = "1100x750+100+100"
             
             self.root.geometry(target_geo)
             self.title_bar.btn_max.config(text="□")
             self.maximized = False
+
         else:
-            # MAXIMIZE
             current_geo = self.root.geometry()
-            # Only save if it looks like a real window, not a minimized 1x1 state
+
             if not current_geo.startswith("1x1+"): 
                 self.old_geometry = current_geo
             
@@ -212,13 +217,17 @@ class InventoryApp:
         try:
             hwnd = ctypes.windll.user32.GetParent(self.root.winfo_id())
             if hwnd == 0: hwnd = self.root.winfo_id()
+
             GWL_EXSTYLE = -20; WS_EX_APPWINDOW = 0x00040000
             style = ctypes.windll.user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+
             if not (style & WS_EX_APPWINDOW):
                 ctypes.windll.user32.SetWindowLongW(hwnd, GWL_EXSTYLE, style | WS_EX_APPWINDOW)
+
             ctypes.windll.user32.SetParent(hwnd, 0)
             SWP_NOMOVE = 0x0002; SWP_NOSIZE = 0x0001; SWP_NOZORDER = 0x0004; SWP_FRAMECHANGED = 0x0020; SWP_SHOWWINDOW = 0x0040
             ctypes.windll.user32.SetWindowPos(hwnd, 0, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED | SWP_SHOWWINDOW)
+
         except Exception as e: print(f"Taskbar Error: {e}")
     
     def stop_timers(self):

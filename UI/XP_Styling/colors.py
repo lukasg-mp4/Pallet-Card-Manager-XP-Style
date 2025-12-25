@@ -1,4 +1,3 @@
-# Centralized Color Definitions
 XP_BEIGE = "#ECE9D8"       
 XP_WHITE = "#FFFFFF" 
 XP_BTN_BG = "#ECE9D8"
@@ -7,6 +6,5 @@ XP_BLUE_HIGHLIGHT = "#316AC5"
 CELL_BG_ALT = "#f0f8ff"
 PILLAR_COLOR = "#D4D0C8"
 
-# Highlight Colors
 HIGHLIGHT_COLOR = "#C1D2EE" 
 YELLOW_HIGHLIGHT = "#ffff99"

@@ -1,4 +1,3 @@
-# Grid Dimensions and Settings
 COL_WIDTHS_DEFAULT = [115, 115, 115, 115, 115]
 FIXED_COL_0_WIDTH = 42 
 ROW_HEIGHT = 26 
@@ -6,13 +5,12 @@ HEADER_HEIGHT = 30
 GAP_WIDTH = 8 
 ROW_GAP = 2 
 
-# Column Headers
 HEADERS = ["Suppliers Code", "Larousse Code", "BBD", "Qty", "Qty of PLT Cards"]
 
-# Colors (imported to keep style consistent)
 from UI.XP_Styling.colors import (
     XP_BEIGE, XP_BTN_BG, PILLAR_COLOR, 
     CELL_BG_ALT, HIGHLIGHT_COLOR, YELLOW_HIGHLIGHT, 
     XP_BORDER_COLOR
 )
+
 from UI.XP_Styling.fonts import XP_FONT, XP_FONT_BOLD, XP_FONT_CELL

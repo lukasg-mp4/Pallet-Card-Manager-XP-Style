@@ -19,16 +19,19 @@ class PrintDialog(tk.Toplevel):
         self.current_sheet_name = initial_sheet_name
         self.data = []; self.current_index = 0
         self.a_key_held = False; self.updating_nav = False
-        self.canvas_ready = False  # Flag to prevent drawing before layout
+        self.canvas_ready = False 
 
         self.printers = get_system_printers()
         self.selected_printer = tk.StringVar(value=get_default_printer())
+
         if self.selected_printer.get() == "" and self.printers:
             self.selected_printer.set(self.printers[0])
 
         w, h = 700, 500
+
         try: x = parent.winfo_rootx() + (parent.winfo_width()//2) - (w//2); y = parent.winfo_rooty() + (parent.winfo_height()//2) - (h//2)
         except: x = 0; y = 0
+
         self.geometry(f"{w}x{h}+{x}+{y}")
 
         self.setup_ui()
@@ -48,17 +51,14 @@ class PrintDialog(tk.Toplevel):
         self.title_bar = XPTitleBar(main, self, title_text="Print Inventory Labels", close_func=self.destroy)
         content = tk.Frame(main, bg=XP_BEIGE); content.pack(fill=tk.BOTH, expand=True)
 
-        # PREVIEW PANE
         left = tk.Frame(content, bg="#404040", width=320, relief="sunken", bd=2)
         left.pack(side=tk.LEFT, fill=tk.BOTH, padx=10, pady=10); left.pack_propagate(False)
         tk.Label(left, text="PREVIEW", font=("Tahoma", 10, "bold"), bg="#303030", fg="white", pady=5).pack(fill=tk.X)
         self.preview_canvas = tk.Canvas(left, bg="#404040", highlightthickness=0)
         self.preview_canvas.pack(fill=tk.BOTH, expand=True)
         
-        # --- FIX: Bind Resize to ensure centering works ---
         self.preview_canvas.bind("<Configure>", self.on_canvas_resize)
 
-        # CONTROLS
         right = tk.Frame(content, bg=XP_BEIGE, padx=10, pady=10); right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
         
         tk.Label(right, text="Select Sheet:", font=("Tahoma", 10, "bold"), bg=XP_BEIGE).pack(anchor="w")
@@ -85,6 +85,7 @@ class PrintDialog(tk.Toplevel):
 
         instr = tk.LabelFrame(right, text="Shortcuts", bg=XP_BEIGE, font=("Tahoma", 8, "bold"))
         instr.pack(fill=tk.X, pady=10, ipadx=5, ipady=5)
+
         for t in ["[Left/Right]: Navigate", "[Enter]: Print Current", "[Hold 'A' + Enter]: Print ALL", "[Esc]: Close"]:
             tk.Label(instr, text=t, bg=XP_BEIGE, font=XP_FONT, anchor="w").pack(fill=tk.X)
 
@@ -101,22 +102,28 @@ class PrintDialog(tk.Toplevel):
             self.data = self.app.sheets[self.current_sheet_name].get_completed_rows()
             self.current_index = 0
             self.update_view()
+
         else: self.data = []; self.update_view()
 
     def update_view(self, skip_input=False):
         if not self.data:
             self.lbl_counter.config(text="No completed docs"); self.lbl_copies.config(text="")
             self.preview_canvas.delete("all")
+
             for b in [self.btn_p_curr, self.btn_p_all, self.btn_prev, self.btn_next]: b.config(state="disabled")
+
             if not skip_input: self.updating_nav = True; self.nav_var.set(""); self.updating_nav = False
+
             return
 
         for b in [self.btn_p_curr, self.btn_p_all]: b.config(state="normal")
+
         item = self.data[self.current_index]
         self.lbl_counter.config(text=f"Document {self.current_index + 1} of {len(self.data)}")
         self.lbl_copies.config(text=f"{item['copies']} Labels")
         self.btn_prev.config(state="disabled" if self.current_index == 0 else "normal")
         self.btn_next.config(state="disabled" if self.current_index == len(self.data) - 1 else "normal")
+
         if not skip_input: self.updating_nav = True; self.nav_var.set(str(self.current_index + 1)); self.updating_nav = False
         
         if self.canvas_ready:
@@ -124,15 +131,12 @@ class PrintDialog(tk.Toplevel):
 
     def draw_preview(self, item):
         self.preview_canvas.delete("all")
-        # Ensure we have actual dimensions
         cw = self.preview_canvas.winfo_width()
         ch = self.preview_canvas.winfo_height()
         
-        # Fallback if canvas isn't mapped yet
         if cw <= 1: cw = 320
         if ch <= 1: ch = 380
         
-        # Fixed card size
         w, h = 240, 340
         x1 = (cw - w) // 2
         y1 = (ch - h) // 2
@@ -141,34 +145,46 @@ class PrintDialog(tk.Toplevel):
         
         def get_font(text, max_w, start_s):
             s = start_s; f = tkfont.Font(family="Tahoma", size=s, weight="bold")
+
             while f.measure(text) > max_w and s > 10: s -= 2; f.configure(size=s)
             return ("Tahoma", s, "bold")
 
         mx = w * 0.9
         f1 = get_font(item['larousse'], mx, int(w*0.28))
         self.preview_canvas.create_text(x1+w/2, y1+(h*0.2), text=item['larousse'], font=f1)
+
         f2 = get_font(item['bbd'], mx, int(w*0.26))
         self.preview_canvas.create_text(x1+w/2, y1+(h*0.5), text=item['bbd'], font=f2)
+
         f3 = get_font(f"X {item['qty']}", mx, int(w*0.28))
         self.preview_canvas.create_text(x1+w/2, y1+(h*0.8), text=f"X {item['qty']}", font=f3)
 
     def on_sheet_change(self, event): self.current_sheet_name = self.sheet_combo.get(); self.load_data()
+
     def on_nav_change(self, *args):
         if self.updating_nav: return
+
         val = self.nav_var.get()
         if val.isdigit():
             idx = int(val) - 1
             if 0 <= idx < len(self.data): self.current_index = idx; self.update_view(skip_input=True)
+
     def go_prev(self): 
         if self.current_index > 0: self.current_index -= 1; self.update_view()
+
     def go_next(self): 
         if self.current_index < len(self.data) - 1: self.current_index += 1; self.update_view()
+
     def handle_enter(self, event): self.print_all() if self.a_key_held else self.print_current()
+
     def print_current(self):
         if not self.data: return
+        
         self.app.start_print_job(self.current_sheet_name, [self.data[self.current_index]])
         self.destroy(); XPInfoDialog(self.app.root, "Queued", "Print job queued.")
+
     def print_all(self):
         if not self.data: return
+
         self.app.start_print_job(self.current_sheet_name, self.data[self.current_index:])
         self.destroy(); XPInfoDialog(self.app.root, "Queued", "All items queued.")
