@@ -1,0 +1,11 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local Data (Don't upload your personal data to GitHub)
+inventory_data.json
+history_log.json
+license.key
+
+# VS Code settings (Optional)
+.vscode/

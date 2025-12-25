@@ -1,0 +1,6 @@
+# Centralized Font Definitions
+XP_FONT = ("Tahoma", 9)
+XP_FONT_BOLD = ("Tahoma", 9, "bold") 
+XP_FONT_CELL = ("Tahoma", 10)
+TITLE_FONT = ("Trebuchet MS", 10, "bold")
+BTN_FONT_CLOSE = ("Arial", 9, "bold")
